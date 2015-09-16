@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <iostream>
-
+#include <typeinfo>
 using namespace std;
 
 
@@ -31,6 +31,8 @@ class SimpleVector
     unsigned capcity() const;
     void push_back(T);
     void pop_back();
+    void pop_front();
+    void insert(unsigned, T);
     void print() const;
     
     private:
@@ -98,19 +100,21 @@ SimpleVector<T> :: ~SimpleVector()
 template<class T>
 void SimpleVector<T> :: expand()
 {
-        cap *= 2;
-        T *a = new T[cap];
-        for(unsigned i = 0; i < sz; i++)
-        {
-            a[i] = aptr[i];
-        }
-        delete [] aptr;
-        aptr = a;
+    cout << "expand called..." << endl;
+    cap += 1;
+    T *a = new T[cap];
+    for(unsigned i = 0; i < sz; i++)
+    {
+        a[i] = aptr[i];
+    }
+    delete [] aptr;
+    aptr = a;
 }
 
 template<class T>
 void SimpleVector<T> :: print() const
 {
+    cout << "Vector Type:" << typeid(T).name() << endl;
     for(unsigned i = 0; i < sz; i++)
     {
         cout << aptr[i] << " ";
@@ -121,7 +125,7 @@ void SimpleVector<T> :: print() const
 template<class T>
 void SimpleVector<T> :: push_back(T a)
 {
-    cout << "Push_back:" << endl;
+    cout << "Push_back called..." << endl;
     sz = sz + 1;
     if(sz >= cap) expand();
     aptr[sz - 1] = a;
@@ -130,7 +134,33 @@ void SimpleVector<T> :: push_back(T a)
 template<class T>
 void SimpleVector<T> :: pop_back()
 {
-    cout << "pop_back:" << endl;
+    cout << "pop_back..." << endl;
     if(sz == 0) exit(0);
     sz--;
+}
+
+template<class T>
+void SimpleVector<T> :: pop_front()
+{
+    cout << "Pop_front called..." << endl;
+    if(sz == 0) exit(0);
+    for(unsigned i = 0; i + 1 < sz ;i++)
+    {
+        aptr[i] = aptr[i + 1];
+    }
+    sz--;
+    
+}
+
+template<class T>
+void SimpleVector<T> :: insert(unsigned index, T value)
+{
+    cout << "insert called..." << endl;
+    sz++;
+    if(sz >= cap) expand();
+    for(unsigned i = sz; i > index; i--)
+    {
+        aptr[i] = aptr[i - 1];
+    }
+    aptr[index] = value;
 }

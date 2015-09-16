@@ -16,5 +16,9 @@ int main()
     a.print();
     a.pop_back();
     a.print();
+    a.pop_front();
+    a.print();
+    a.insert(3, 4);
+    a.print();
     return 0;
 }
